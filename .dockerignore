@@ -1,0 +1,11 @@
+.circleci/
+.idea/
+.next/
+dist/
+node_modules/
+
+
+.env
+.prettierignore
+.prettierrc.json
+nodemon.json

@@ -1,0 +1,4 @@
+[
+  {"id": "portal.admin.name", "defaultMessage": "Jméno admina"},
+  {"id": "portal.user.name", "defaultMessage": "Jméno usera"}
+]

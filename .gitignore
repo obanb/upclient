@@ -1,0 +1,27 @@
+.idea/
+.vscode/
+.history/
+.next/
+.DS_Store
+coverage/
+dist/
+node_modules/
+
+# Generovane soubory jazyku
+client/Lang.ts
+lang/cs.json
+
+# Definice pro deploy do Google Cloud App Engine / nastavuje CircleCI
+app.yaml
+
+# Parametry pro aplikaci, ktere vystupuji v process.env.* / nastavuje CircleCI
+.env
+.npmrc
+.gqlconfig
+
+# Nastavení pro GraphQL plugin ve VS Code od Prisma
+.graphqlconfig
+
+# Nastavení pro GraphQL plugin ve VS Code od Apollo
+apollo.config.js
+

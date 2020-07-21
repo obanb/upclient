@@ -1,0 +1,63 @@
+---
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "nginx-8-config"
+  namespace: "default"
+  labels:
+    app: "nginx-8"
+data:
+  BACKEND_ENDPOINT: "https://apollo13-backend-dev.eon.apitree.cz"
+  PORT: "8081"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "nginx-8"
+  namespace: "default"
+  labels:
+    app: "nginx-8"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "nginx-8"
+  template:
+    metadata:
+      labels:
+        app: "nginx-8"
+    spec:
+      containers:
+        - name: "up-frontend-sha256"
+          image: "eu.gcr.io/${GOOGLE_PROJECT_ID}/${PROJECT_NAME}:${CIRCLE_SHA1}"
+          env:
+            - name: "BACKEND_ENDPOINT"
+              valueFrom:
+                configMapKeyRef:
+                  key: "BACKEND_ENDPOINT"
+                  name: "nginx-8-config"
+            - name: "PORT"
+              valueFrom:
+                configMapKeyRef:
+                  key: "PORT"
+                  name: "nginx-8-config"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "nginx-8-hpa"
+  namespace: "default"
+  labels:
+    app: "nginx-8"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "nginx-8"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: "Resource"
+      resource:
+        name: "cpu"
+        targetAverageUtilization: 80
